@@ -1,5 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
-html, body {
+html,
+body {
   height: 100%;
   margin: 0;
 }
@@ -9,31 +10,38 @@ html, body {
   flex-direction: column;
   height: 100%;
 }
-header, footer {
+
+header,
+footer {
   flex: 0 1 auto;
 }
+
 main .content {
-  background-color:red;
+  background-color: red;
 }
-main{
+
+main {
   flex-direction: row !important;
 }
 
-main div{
-    flex-direction: row;
+main div {
+  flex-direction: row;
   flex: 1;
   overflow: scroll;
-  -webkit-overflow-scrolling:touch;
+  -webkit-overflow-scrolling: touch;
 }
 
-
-/* Not our focus */
-header, footer {
+header,
+footer {
   background: SLATEGREY;
   color: SNOW;
   padding: 0.5em;
 }
+
 main {
-  padding: 0.5em;
+  padding: 0;
 }
 
+.content-section {
+  padding: 0.5em;
+}

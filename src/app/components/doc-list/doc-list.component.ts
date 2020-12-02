@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { DocManagerService } from 'src/app/services/doc-manager.service';
 
 @Component({
   selector: 'app-doc-list',
@@ -7,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DocListComponent implements OnInit {
 
-  constructor() { }
+  constructor(private docItemService: DocManagerService) { }
 
   ngOnInit(): void {
   }
