@@ -1,1 +1,39 @@
 /* You can add global styles to this file, and also import other style files */
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+header, footer {
+  flex: 0 1 auto;
+}
+main .content {
+  background-color:red;
+}
+main{
+  flex-direction: row !important;
+}
+
+main div{
+    flex-direction: row;
+  flex: 1;
+  overflow: scroll;
+  -webkit-overflow-scrolling:touch;
+}
+
+
+/* Not our focus */
+header, footer {
+  background: SLATEGREY;
+  color: SNOW;
+  padding: 0.5em;
+}
+main {
+  padding: 0.5em;
+}
+
