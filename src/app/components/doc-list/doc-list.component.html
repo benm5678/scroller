@@ -1,26 +1,26 @@
 <div class="container">
   <header>
-    ITEMS LIST
-    <img src="../../../assets/svg/add-doc.svg"/>
+    <div>
+    <img src="../../../assets/svg/scroll-icon.svg"/>
+    {{ docItems?.length }}
+      Scroll Items
+    </div>
+    <div>
+      <img src="../../../assets/svg/add-doc-icon.svg" (click)="onAddNewClicked()"/>
+    </div>
   </header>
   <div class="container content-section">
-    <p>Main content.</p>
-    <p>Main content.</p>
-    <p>Main content.</p>
-    <p>Main content.</p>
-    <p>Main content.</p>
-    <p>Main content.</p>
-    <p>Main content.</p>
-    <p>Main content.</p>
-    <p>Main content.</p>
-    <p>Main content.</p>
-    <p>Main content.</p>
-    <p>Main content.</p>
-    <p>Main content.</p>
-    <p>Main content.</p>
-    <p>Main content.</p>
-    <p>Main content.</p>
-    <p>Main content.</p>
-    <p>Main content.</p>
+    <div *ngFor="let docItem of docItems">
+      <div class="container-fluid doc-item">
+        <div class="row" (click)="onRowClicked(docItem)">
+          <div class="col-10">
+            {{ docItem.title }}
+          </div>
+          <div class="col-1 text-right">
+            <img src="../../../assets/svg/trash-icon.svg" (click)="onDeleteClicked($event, docItem)">
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

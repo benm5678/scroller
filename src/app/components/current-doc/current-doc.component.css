@@ -1,3 +1,7 @@
 mat-slider {
   width: 100%;
 }
+
+.content-section {
+  white-space: pre-wrap;
+}

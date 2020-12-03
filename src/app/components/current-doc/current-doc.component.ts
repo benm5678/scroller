@@ -1,5 +1,6 @@
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, Optional } from '@angular/core';
 import * as NoSleep from 'nosleep.js';
+import { DocItem } from 'src/app/models/doc-item';
 
 @Component({
   selector: 'app-current-doc',
@@ -15,7 +16,7 @@ export class CurrentDocComponent implements OnInit {
   noSleepStatus = '';
   lastScrollStopTime: number = null;
 
-  constructor() { }
+  constructor(@Optional() public docItem: DocItem) { }
 
   ngOnInit(): void {
   }
@@ -26,6 +27,22 @@ export class CurrentDocComponent implements OnInit {
     }
 
     return value;
+  }
+
+  loadDocItem(): void{
+    //this.enableEditing(false);
+    if (this.docItem == null){
+      //this.scrolledContentHeader.nativeElement.classList.add('no-doc-loaded');
+      console.log('no doc loaded');
+    }else{
+      console.log(`displaying doc id ${this.docItem.id}`);
+      //this.scrolledContentHeader.nativeElement.classList.remove('no-doc-loaded');
+      //this.newTitle.nativeElement.value = this.docItem.title;
+      //this.newTextContent.nativeElement.value = this.docItem.textContent;
+      this.speed = this.docItem.scrollSpeed;
+      this.onSpeedChanged(null);
+      this.scrolledContentContainer.nativeElement.scrollTo({top: 0, behavior: 'smooth'});
+    }
   }
 
   onSpeedChanged(e): void{
