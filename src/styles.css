@@ -1,4 +1,3 @@
-/* You can add global styles to this file, and also import other style files */
 html,
 body {
   height: 100%;
@@ -24,7 +23,7 @@ main {
   flex-direction: row !important;
 }
 
-main div {
+main > div {
   flex-direction: row;
   flex: 1;
   overflow: scroll;
@@ -44,4 +43,8 @@ main {
 
 .content-section {
   padding: 0.5em;
+  overflow: scroll;
 }
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

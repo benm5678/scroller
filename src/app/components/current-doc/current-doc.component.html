@@ -1,7 +1,17 @@
 <div class="container">
-  <header>YO</header>
+  <header>
+    YO
+  </header>
   <div class="container content-section">
-    <section>
+    <p>
+      <mat-slider thumbLabel [displayWith]="formatLabel" tickInterval="1000" min="1" max="100000"></mat-slider>
+    </p>
+    <p>
+      <mat-form-field appearance="fill">
+        <mat-label>Title</mat-label>
+        <input matInput>
+      </mat-form-field>
+    </p>
     <p>Main content.</p>
     <p>Main content.</p>
     <p>Main content.</p>
@@ -20,6 +30,6 @@
     <p>Main content.</p>
     <p>Main content.</p>
     <p>Main content.</p>
-  </section>
+
   </div>
 </div>
