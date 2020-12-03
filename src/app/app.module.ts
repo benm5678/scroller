@@ -13,6 +13,8 @@ import { AppComponent } from './app.component';
 
 import { CurrentDocComponent } from './components/current-doc/current-doc.component';
 import { DocListComponent } from './components/doc-list/doc-list.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -27,6 +29,7 @@ import { DocListComponent } from './components/doc-list/doc-list.component';
     MaterialModule,
     DocDbModule,
     FormsModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
   ],
   providers: [CookieService],
   bootstrap: [AppComponent]
