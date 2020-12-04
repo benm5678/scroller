@@ -1,0 +1,15 @@
+<h1 mat-dialog-title>Import Data</h1>
+<div mat-dialog-content>
+  <p>
+    <button type="button" mat-raised-button (click)="fileInput.click()">Choose File</button>
+  </p>
+  <input hidden (change)="fileChanged($event)" #fileInput type="file" accept=".json">
+  <mat-form-field [hidden]="file === undefined">
+    <mat-label></mat-label>
+    <input matInput [readonly]="true" [ngModel]="file?.name">
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onCancelClick()" cdkFocusInitial>Cancel</button>
+  <button mat-button [mat-dialog-close]="" (click)="onImportClick()" [disabled]="file === undefined">Import</button>
+</div>

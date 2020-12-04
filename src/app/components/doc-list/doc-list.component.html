@@ -1,12 +1,13 @@
 <div class="container">
   <header>
     <div>
-    <img src="../../../assets/svg/scroll-icon.svg"/>
-    {{ docItems?.length }}
+      <app-doc-list-menu></app-doc-list-menu>
+      <img src="../../../assets/svg/scroll-icon.svg" />
+      {{ docItems?.length }}
       Scroll Items
     </div>
     <div>
-      <img src="../../../assets/svg/add-doc-icon.svg" (click)="onAddNewClicked()"/>
+      <img src="../../../assets/svg/add-doc-icon.svg" (click)="onAddNewClicked()" />
     </div>
   </header>
   <div class="container content-section">

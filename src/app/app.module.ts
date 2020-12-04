@@ -15,12 +15,16 @@ import { CurrentDocComponent } from './components/current-doc/current-doc.compon
 import { DocListComponent } from './components/doc-list/doc-list.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+import { DocListMenuComponent } from './components/doc-list-menu/doc-list-menu.component';
+import { DocImportDialogComponent } from './components/doc-import-dialog/doc-import-dialog.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     CurrentDocComponent,
-    DocListComponent
+    DocListComponent,
+    DocListMenuComponent,
+    DocImportDialogComponent
   ],
   imports: [
     BrowserModule,
