@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { DocImportDialogComponent } from '../doc-import-dialog/doc-import-dialog.component';
+import { DocListImportDialogComponent } from '../doc-list-import-dialog/doc-list-import-dialog.component';
 
 @Component({
   selector: 'app-doc-list-menu',
@@ -15,7 +15,7 @@ export class DocListMenuComponent implements OnInit {
   }
 
   openImportDialog(): void {
-    const importDialogRef = this.dialog.open(DocImportDialogComponent, {
+    const importDialogRef = this.dialog.open(DocListImportDialogComponent, {
       width: '350px',
       data: {  }
     });

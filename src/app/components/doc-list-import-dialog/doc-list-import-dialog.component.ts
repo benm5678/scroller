@@ -4,13 +4,13 @@ import { DocManagerService } from 'src/app/services/doc-manager.service';
 
 @Component({
   selector: 'app-doc-import-dialog',
-  templateUrl: './doc-import-dialog.component.html',
-  styleUrls: ['./doc-import-dialog.component.css']
+  templateUrl: './doc-list-import-dialog.component.html',
+  styleUrls: ['./doc-list-import-dialog.component.css']
 })
-export class DocImportDialogComponent implements OnInit {
+export class DocListImportDialogComponent implements OnInit {
   file: any;
 
-  constructor(public dialogRef: MatDialogRef<DocImportDialogComponent>,
+  constructor(public dialogRef: MatDialogRef<DocListImportDialogComponent>,
               private docItemService: DocManagerService) {
 
   }

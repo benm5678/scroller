@@ -16,7 +16,8 @@ import { DocListComponent } from './components/doc-list/doc-list.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { DocListMenuComponent } from './components/doc-list-menu/doc-list-menu.component';
-import { DocImportDialogComponent } from './components/doc-import-dialog/doc-import-dialog.component';
+import { DocListImportDialogComponent } from './components/doc-list-import-dialog/doc-list-import-dialog.component';
+import { DocListExportDialogComponent } from './components/doc-list-export-dialog/doc-list-export-dialog.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { DocImportDialogComponent } from './components/doc-import-dialog/doc-imp
     CurrentDocComponent,
     DocListComponent,
     DocListMenuComponent,
-    DocImportDialogComponent
+    DocListImportDialogComponent,
+    DocListExportDialogComponent
   ],
   imports: [
     BrowserModule,
