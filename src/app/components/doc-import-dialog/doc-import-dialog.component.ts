@@ -8,7 +8,6 @@ import { DocManagerService } from 'src/app/services/doc-manager.service';
   styleUrls: ['./doc-import-dialog.component.css']
 })
 export class DocImportDialogComponent implements OnInit {
-  @Output() docItemsTableImported: EventEmitter<any> = new EventEmitter();
   file: any;
 
   constructor(public dialogRef: MatDialogRef<DocImportDialogComponent>,
@@ -34,7 +33,7 @@ export class DocImportDialogComponent implements OnInit {
       this.docItemService.importDb(JSON.parse(fileReader.result.toString()))
         .then(() => {
           console.log('imported file!');
-          this.docItemsTableImported.emit();
+          this.dialogRef.close();
         });
     };
     fileReader.readAsText(this.file);

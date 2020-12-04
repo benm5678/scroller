@@ -15,6 +15,10 @@ export class DocListComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadDocsFromDb();
+    // Subscribe to import even to reload docs
+    this.docItemService.docsImported$.subscribe(docItems => {
+      this.loadDocsFromDb();
+    });
   }
 
   loadDocsFromDb(): void{

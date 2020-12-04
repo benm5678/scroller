@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { NgxIndexedDBService } from 'ngx-indexed-db';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { DocItem } from '../models/doc-item';
 
 const dbTableName = 'docs';
@@ -8,6 +8,8 @@ const dbTableName = 'docs';
   providedIn: 'root'
 })
 export class DocManagerService {
+  private docDataImportedSource = new Subject<DocItem[]>();
+  docsImported$ = this.docDataImportedSource.asObservable();
 
   constructor(private dbService: NgxIndexedDBService) { }
 
@@ -18,6 +20,7 @@ export class DocManagerService {
           docItems.forEach(async doc => {
             await this.dbService.add(dbTableName, doc);
           });
+          this.docDataImportedSource.next(docItems);
           resolve(true);
         }
       });

@@ -15,9 +15,12 @@ export class DocListMenuComponent implements OnInit {
   }
 
   openImportDialog(): void {
-    const dialogRef = this.dialog.open(DocImportDialogComponent, {
+    const importDialogRef = this.dialog.open(DocImportDialogComponent, {
       width: '350px',
       data: {  }
+    });
+    importDialogRef.afterClosed().subscribe(reload => {
+      console.log(`Import Dialog | reload: ${reload}`);
     });
   }
 }
