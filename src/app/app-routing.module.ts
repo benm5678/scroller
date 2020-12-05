@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { OauthHandlerComponent } from './components/oauth-handler/oauth-handler.component';
+import { DocListMenuComponent } from './components/doc-list-menu/doc-list-menu.component';
 
 const routes: Routes = [
-  { path: 'auth-dropbox', component: OauthHandlerComponent }
+  { path: 'auth-dropbox', component: DocListMenuComponent, data: { gotDropboxAuth: true } }
 ];
 
 @NgModule({

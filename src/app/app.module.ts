@@ -18,7 +18,6 @@ import { environment } from '../environments/environment';
 import { DocListMenuComponent } from './components/doc-list-menu/doc-list-menu.component';
 import { DocListImportDialogComponent } from './components/doc-list-import-dialog/doc-list-import-dialog.component';
 import { DocListExportDialogComponent } from './components/doc-list-export-dialog/doc-list-export-dialog.component';
-import { OauthHandlerComponent } from './components/oauth-handler/oauth-handler.component';
 
 @NgModule({
   declarations: [
@@ -27,8 +26,7 @@ import { OauthHandlerComponent } from './components/oauth-handler/oauth-handler.
     DocListComponent,
     DocListMenuComponent,
     DocListImportDialogComponent,
-    DocListExportDialogComponent,
-    OauthHandlerComponent
+    DocListExportDialogComponent
   ],
   imports: [
     AppRoutingModule,
