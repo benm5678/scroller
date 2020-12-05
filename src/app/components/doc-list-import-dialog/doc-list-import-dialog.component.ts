@@ -11,15 +11,15 @@ export class DocListImportDialogComponent implements OnInit {
   file: any;
 
   constructor(public dialogRef: MatDialogRef<DocListImportDialogComponent>,
-              private docItemService: DocManagerService) {
+              private docManagerService: DocManagerService) {
 
+  }
+
+  ngOnInit(): void {
   }
 
   onCancelClick(): void {
     this.dialogRef.close();
-  }
-
-  ngOnInit(): void {
   }
 
   fileChanged(e): void {
@@ -30,7 +30,7 @@ export class DocListImportDialogComponent implements OnInit {
     const fileReader = new FileReader();
     fileReader.onload = async (e) => {
       console.log('importing file...');
-      this.docItemService.importDb(JSON.parse(fileReader.result.toString()))
+      this.docManagerService.importDb(JSON.parse(fileReader.result.toString()))
         .then(() => {
           console.log('imported file!');
           this.dialogRef.close();

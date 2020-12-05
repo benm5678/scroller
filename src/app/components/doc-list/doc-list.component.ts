@@ -11,18 +11,18 @@ export class DocListComponent implements OnInit {
   @Output() docItemSelected: EventEmitter<DocItem> = new EventEmitter();
   docItems: DocItem[];
 
-  constructor(private docItemService: DocManagerService) { }
+  constructor(private docManagerService: DocManagerService) { }
 
   ngOnInit(): void {
     this.loadDocsFromDb();
     // Subscribe to import even to reload docs
-    this.docItemService.docsImported$.subscribe(docItems => {
+    this.docManagerService.docsImported$.subscribe(docItems => {
       this.loadDocsFromDb();
     });
   }
 
   loadDocsFromDb(): void{
-    this.docItemService.getDocItemsFromDb().subscribe((docItems) => {
+    this.docManagerService.getDocItemsFromDb().subscribe((docItems) => {
       console.log(`loaded ${docItems.length} docs from db`);
       this.docItems = docItems;
     });
@@ -32,7 +32,7 @@ export class DocListComponent implements OnInit {
     e.stopPropagation();
     console.log(`onDeleteClicked | doc id: ${docItem.id}`);
     if (confirm(`Proceed to delete '${docItem.title}' ?`)){
-      this.docItemService.deleteDocItem(docItem.id)
+      this.docManagerService.deleteDocItem(docItem.id)
       .subscribe((allPeople) => {
         console.log(`deleted doc | id: ${docItem.id}`);
         this.loadDocsFromDb();
@@ -42,7 +42,7 @@ export class DocListComponent implements OnInit {
 
   onAddNewClicked(): void{
     console.log(`onAddNewClicked`);
-    this.docItemService.addDocItemToDb().subscribe((key) => {
+    this.docManagerService.addDocItemToDb().subscribe((key) => {
       console.log('added new | doc id: ', key);
       this.loadDocsFromDb();
     });
