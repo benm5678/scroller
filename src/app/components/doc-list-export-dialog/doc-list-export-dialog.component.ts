@@ -75,12 +75,14 @@ export class DocListExportDialogComponent implements OnInit {
       dbx.filesUpload({contents: JSON.stringify(docItems),
         path: `${this.dropboxFileName}.${new Date().getTime()}.json`, mode: {'.tag': 'overwrite'}, autorename: false, mute: true })
         .then((response: any) => {
-          alert('Saved successfully!');
-          console.log('Saved data to Dropbox', response);
+          // Sucessfully saved
+          console.log('Saved data to Dropbox', JSON.stringify(response));
+          this.showMsg(`Saved data to dropbox | file: /Apps/ScrollerDb/${response.name}`);
+          this.dialogRef.close();
       }).catch((error: any) => {
         // Error most likely auth issue, show error & clear cached token
         console.log(JSON.stringify(error));
-        this.showMsg(`Failed to save to dropbox - try to authenticate again`);
+        this.showMsg(`Failed to save data to dropbox!`);
         this.cookieService.delete(this.dropboxTokenCookie, null);
         this.dropboxToken = null;
       });
