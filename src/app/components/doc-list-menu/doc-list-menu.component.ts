@@ -9,8 +9,8 @@ import { DocListImportDialogComponent } from '../doc-list-import-dialog/doc-list
   styleUrls: ['./doc-list-menu.component.css']
 })
 export class DocListMenuComponent implements OnInit {
-
-  constructor(public dialog: MatDialog) { }
+  constructor(public dialog: MatDialog) {
+  }
 
   ngOnInit(): void {
   }

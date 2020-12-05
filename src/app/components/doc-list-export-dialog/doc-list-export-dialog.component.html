@@ -8,7 +8,7 @@
     </mat-select>
   </mat-form-field>
   <p>
-    <a href="{{dropboxAuthUrl}}" target="scrollerDropboxAuth" [hidden]="dropboxIsAuthenticated || selectedTarget != 'Dropbox'">Connect to Dropbox</a>
+    <a href="{{dropboxAuthUrl}}" [hidden]="dropboxIsAuthenticated || selectedTarget != 'Dropbox'">Connect to Dropbox</a>
   </p>
 </div>
 <div mat-dialog-actions>

@@ -29,7 +29,7 @@ export class DocListExportDialogComponent implements OnInit {
     DocListExportDialogComponent.isLoading = false;
 
     const dbx = new Dropbox({ clientId: this.dropboxClientId });
-    this.dropboxAuthUrl = dbx.getAuthenticationUrl(`${location.origin}/auth`);
+    this.dropboxAuthUrl = dbx.getAuthenticationUrl(`${location.origin}/auth-dropbox`);
     this.dropboxToken = Utils.getAccessTokenFromUrl();
     if (!this.dropboxToken){
       this.dropboxToken = this.cookieService.get(this.dropboxTokenCookie);
@@ -92,3 +92,4 @@ export class DocListExportDialogComponent implements OnInit {
   }
 
 }
+
