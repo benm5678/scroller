@@ -56,14 +56,14 @@ export class DocListExportDialogComponent implements OnInit {
         this.saveToDropbox();
         break;
       case 'GoogleDrive':
-        this.showError('Google Drive is not supported yet!');
+        this.showMsg('Google Drive is not supported yet!');
         break;
       default:
-        this.showError('Select an export target!');
+        this.showMsg('Select an export target!');
     }
   }
 
-  showError(msg: string): void{
+  showMsg(msg: string): void{
     this.snackBar.open(msg, null, {
       duration: 5000,
     });
@@ -82,12 +82,12 @@ export class DocListExportDialogComponent implements OnInit {
           console.log('Saved data to Dropbox', response);
       }).catch((error: any) => {
         // If it errors because of a dropbox problem, reload the page so the user can re-connect to dropbox
-        this.showError('Failed to save to dropbox');
+        this.showMsg('Failed to save to dropbox');
         console.log(JSON.stringify(error));
         window.location.href = '/';
       });
     }, (err) => {
-      this.showError('Failed to export local Db');
+      this.showMsg('Failed to export local Db');
     });
   }
 
