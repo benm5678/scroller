@@ -3,6 +3,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { DocManagerService } from 'src/app/services/doc-manager.service';
 import { CookieService } from 'ngx-cookie-service';
 import { Utils } from 'src/app/helpers/utils';
+import { MatSnackBar } from '@angular/material/snack-bar';
 declare var Dropbox: any;
 
 @Component({
@@ -12,30 +13,30 @@ declare var Dropbox: any;
 })
 export class DocListExportDialogComponent implements OnInit {
   static isLoading: boolean;
-  CLIENT_ID = '1bqptfh6hqy4tok'; // App key from Dropbox
-  FILE_NAME = '/ScrollerDb.json'; // Or whatever you want the file to be named where the data is stored
-  authUrl: string;
+  selectedTarget = 'Dropbox';
+  dropboxClientId = '1bqptfh6hqy4tok';
+  dropboxFileName = '/ScrollerDb';
+  dropboxAuthUrl: string;
   dropboxToken: string;
-  isAuthenticated: boolean;
+  dropboxTokenCookie = 'dropboxToken';
+  dropboxIsAuthenticated = false;
 
   constructor(public dialogRef: MatDialogRef<DocListExportDialogComponent>,
               private docManagerService: DocManagerService,
-              private cookieService: CookieService)
+              private cookieService: CookieService,
+              private snackBar: MatSnackBar)
   {
-    this.isAuthenticated = false;
     DocListExportDialogComponent.isLoading = false;
-    const cookieName = 'dropbox-token';
 
-    const dbx = new Dropbox({ clientId: this.CLIENT_ID });
-    this.authUrl = dbx.getAuthenticationUrl(`${location.origin}/auth`);
-
+    const dbx = new Dropbox({ clientId: this.dropboxClientId });
+    this.dropboxAuthUrl = dbx.getAuthenticationUrl(`${location.origin}/auth`);
     this.dropboxToken = Utils.getAccessTokenFromUrl();
     if (!this.dropboxToken){
-      this.dropboxToken = this.cookieService.get(cookieName);
+      this.dropboxToken = this.cookieService.get(this.dropboxTokenCookie);
     }else{
-      this.cookieService.set(cookieName, this.dropboxToken, 30, null, null, true, 'Lax');
+      this.cookieService.set(this.dropboxTokenCookie, this.dropboxToken, 30, null, null, true, 'Lax');
     }
-    this.isAuthenticated = this.dropboxToken ? true : false;
+    this.dropboxIsAuthenticated = this.dropboxToken ? true : false;
   }
 
   ngOnInit(): void {
@@ -45,9 +46,27 @@ export class DocListExportDialogComponent implements OnInit {
     this.dialogRef.close();
   }
 
+  onExportTargetChange(): void{
+
+  }
+
   onExportClick(): void{
-    // TODO: check dropdown for target
-    this.saveToDropbox();
+    switch (this.selectedTarget){
+      case 'Dropbox':
+        this.saveToDropbox();
+        break;
+      case 'GoogleDrive':
+        this.showError('Google Drive is not supported yet!');
+        break;
+      default:
+        this.showError('Select an export target!');
+    }
+  }
+
+  showError(msg: string): void{
+    this.snackBar.open(msg, null, {
+      duration: 5000,
+    });
   }
 
   saveToDropbox(): void {
@@ -57,18 +76,18 @@ export class DocListExportDialogComponent implements OnInit {
 
       const dbx = new Dropbox({ accessToken: this.dropboxToken });
       dbx.filesUpload({contents: JSON.stringify(docItems),
-        path: `${this.FILE_NAME}.${new Date().getTime()}`, mode: {'.tag': 'overwrite'}, autorename: false, mute: true })
+        path: `${this.dropboxFileName}.${new Date().getTime()}.json`, mode: {'.tag': 'overwrite'}, autorename: false, mute: true })
         .then((response: any) => {
           alert('Saved successfully!');
           console.log('Saved data to Dropbox', response);
       }).catch((error: any) => {
         // If it errors because of a dropbox problem, reload the page so the user can re-connect to dropbox
-        alert('Failed to save to dropbox');
+        this.showError('Failed to save to dropbox');
         console.log(JSON.stringify(error));
         window.location.href = '/';
       });
     }, (err) => {
-      alert('Failed to export local Db');
+      this.showError('Failed to export local Db');
     });
   }
 
