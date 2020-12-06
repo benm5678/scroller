@@ -8,43 +8,53 @@ const dbTableName = 'docs';
   providedIn: 'root'
 })
 export class DocManagerService {
-  private docDataImportedSource = new Subject<DocItem[]>();
-  docsImported$ = this.docDataImportedSource.asObservable();
+  private docDataChangedSource = new Subject<null>();
+  docsChanged$ = this.docDataChangedSource.asObservable();
 
   constructor(private dbService: NgxIndexedDBService) { }
 
-  async importDb(docItems: DocItem[]): Promise<any>{
+  async importDb(docItems: DocItem[]): Promise<any> {
     return new Promise((resolve, reject) => {
       this.dbService.clear(dbTableName).subscribe((isSuccess) => {
-        if (isSuccess){
+        if (isSuccess) {
           docItems.forEach(async doc => {
             await this.dbService.add(dbTableName, doc);
           });
-          this.docDataImportedSource.next(docItems);
+          this.docDataChangedSource.next();
           resolve(true);
         }
       });
     });
   }
 
-  getDocItemsFromDb(): Observable<DocItem[]>{
+  getDocItemsFromDb(): Observable<DocItem[]> {
     return this.dbService.getAll(dbTableName);
   }
 
-  addDocItemToDb(): Observable<number>{
-    return this.dbService
-    .add(dbTableName, {
-      title: `NewDoc${new Date().getTime()}`,
-      scrollSpeed: 60,
-      textContent: `ReplaceWithYourContent`,
+  async addDocItemToDb(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.dbService
+        .add(dbTableName, {
+          title: `NewDoc${new Date().getTime()}`,
+          scrollSpeed: 60,
+          textContent: `ReplaceWithYourContent`,
+        }).subscribe((count) => {
+          this.docDataChangedSource.next();
+          resolve(true);
+        });
     });
   }
 
-  deleteDocItem(id: number): Observable<any[]>{
-    return this.dbService.delete(dbTableName, id);
+  async deleteDocItem(id: number): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.dbService.delete(dbTableName, id).subscribe((items) => {
+        this.docDataChangedSource.next();
+        resolve(true);
+      });
+    });
   }
 
-  saveDocItem(doc: DocItem): Observable<any[]>{
+  saveDocItem(doc: DocItem): Observable<any[]> {
     return this.dbService.update(dbTableName, {
       id: doc.id,
       scrollSpeed: doc.scrollSpeed,

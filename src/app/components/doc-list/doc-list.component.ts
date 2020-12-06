@@ -19,45 +19,35 @@ export class DocListComponent implements OnInit {
   ngOnInit(): void {
     this.loadDocsFromDb();
     // Subscribe to import even to reload docs
-    this.docManagerService.docsImported$.subscribe(docItems => {
+    this.docManagerService.docsChanged$.subscribe(docItems => {
       this.loadDocsFromDb();
     });
   }
 
-  loadDocsFromDb(): void{
+  loadDocsFromDb(): void {
     this.docManagerService.getDocItemsFromDb().subscribe((docItems) => {
       console.log(`loaded ${docItems.length} docs from db`);
       this.docItems = docItems;
     });
   }
 
-  onDeleteClicked(e, docItem: DocItem): void{
-    e.stopPropagation();
-    console.log(`onDeleteClicked | doc id: ${docItem.id}`);
-    if (confirm(`Proceed to delete '${docItem.title}' ?`)){
-      this.docManagerService.deleteDocItem(docItem.id)
-      .subscribe((allPeople) => {
-        console.log(`deleted doc | id: ${docItem.id}`);
-        this.loadDocsFromDb();
-      });
-    }
-  }
-
-  onAddNewClicked(): void{
+  onAddNewClicked(): void {
     console.log(`onAddNewClicked`);
-    this.docManagerService.addDocItemToDb().subscribe((key) => {
-      console.log('added new | doc id: ', key);
-      this.loadDocsFromDb();
-    });
+    this.docManagerService.addDocItemToDb()
+      .then((response: any) => {
+        console.log('added new | doc id: ', response);
+      }).catch((error: any) => {
+        console.log('faied to add new doc');
+      });
   }
 
-  onRowClicked(e): void{
+  onRowClicked(e): void {
     const docItem: DocItem = e.option.value;
     console.log(`onRowClicked | doc id: ${docItem.id}`);
     this.docSelectedSource.next(docItem);
   }
 
-  docItemsTableImported(): void{
+  docItemsTableImported(): void {
     this.loadDocsFromDb();
   }
 }

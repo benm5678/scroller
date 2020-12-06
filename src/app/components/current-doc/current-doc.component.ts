@@ -57,7 +57,17 @@ export class CurrentDocComponent implements OnInit {
 
   onDeleteClick(): void {
     console.log(`delete clicked | docId: ${this.docItem.id}`);
-    this.showMsg(`Deleted document "${this.docItem.title}"!`);
+    if (confirm(`Proceed to delete '${this.docItem.title}' ?`)){
+      this.docManagerService.deleteDocItem(this.docItem.id)
+      .then((response) => {
+        console.log(`deleted doc | id: ${this.docItem.id}`);
+        this.docItem = null;
+        this.showMsg(`Deleted document "${this.docItem.title}"!`);
+      }).catch((err) => {
+        console.log(`Failed to delete doc | id: ${this.docItem.id}`);
+        this.showMsg(`Failed to delete document "${this.docItem.title}"!`);
+      });
+    }
   }
 
   onSaveClicked(): void{
