@@ -8,7 +8,8 @@
       <button mat-mini-fab color="primary" (click)="onEditClick()" *ngIf="!isEditing" matTooltip="Edit document">
         <mat-icon>edit</mat-icon>
       </button>
-      <button mat-mini-fab color="primary" (click)="onUndoEditClick()" *ngIf="isEditing" matTooltip="Cancel document editing">
+      <button mat-mini-fab color="primary" (click)="onUndoEditClick()" *ngIf="isEditing"
+        matTooltip="Cancel document editing">
         <mat-icon>undo</mat-icon>
       </button>
       <button mat-mini-fab color="warn" (click)="onDeleteClick()" *ngIf="!isEditing" matTooltip="Delete document">
@@ -34,13 +35,11 @@
         <input matInput placeholder="Enter document title..." #newTitle>
       </mat-form-field>
     </p>
-
-    <div class=container>
-      <mat-form-field class="example-full-width">
+    <div class="container-row flex-grow-1">
+      <mat-form-field class="h-100 w-100">
         <mat-label>Text Content</mat-label>
         <textarea matInput placeholder="Enter document text..." #newTextContent></textarea>
       </mat-form-field>
     </div>
-
   </div>
 </div>

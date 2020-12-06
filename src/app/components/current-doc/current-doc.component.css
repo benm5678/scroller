@@ -10,4 +10,14 @@ mat-form-field {
   white-space: pre-wrap;
 }
 
+::ng-deep .mat-form-field-wrapper, ::ng-deep .mat-form-field-infix, ::ng-deep .mat-form-field-infix textarea{
+  display: flex;
+  height: 100%;
+}
+
+#newTextContent{
+  width: 100%;
+  height: 100%;
+}
+
 [hidden] { display: none !important;}

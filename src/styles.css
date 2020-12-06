@@ -4,11 +4,24 @@ body {
   margin: 0;
 }
 
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
 .container {
   display: flex;
   flex-direction: column;
   height: 100%;
 }
+
+.container-row {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+}
+
+*, ::after, ::before {
+  box-sizing: border-box;
+  }
 
 header,
 footer {
@@ -35,6 +48,18 @@ footer {
   padding: 0.5em;
 }
 
+.flex-grow-1{
+  flex-grow: 1 !important;
+}
+
+.h-100 {
+  height: 100%!important;
+}
+
+.w-100 {
+  width: 100%!important;
+}
+
 footer {
   background: SLATEGREY;
   color: SNOW;
@@ -49,5 +74,3 @@ main {
   overflow: scroll;
 }
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
