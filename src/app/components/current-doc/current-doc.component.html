@@ -1,20 +1,45 @@
 <div class="container">
   <header>
-    <mat-slide-toggle [(ngModel)]="isActive" (change)="onAutoScrollClicked()">Auto Scroll</mat-slide-toggle>
-    <mat-slider thumbLabel [displayWith]="formatLabel" tickInterval="1" step="1" min="1" max="100" [(ngModel)]="speed"
-      (change)="onSpeedChanged($event)">
-    </mat-slider>
+    <mat-toolbar *ngIf="docItem">
+      <mat-slide-toggle [(ngModel)]="isActive" (change)="onAutoScrollClicked()">Auto Scroll</mat-slide-toggle>
+      <mat-slider thumbLabel [displayWith]="formatLabel" tickInterval="1" step="1" min="1" max="100" [(ngModel)]="speed"
+        (change)="onSpeedChanged($event)">
+      </mat-slider>
+      <button mat-mini-fab color="primary" (click)="onEditClick()" *ngIf="!isEditing">
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button mat-mini-fab color="primary" (click)="onUndoEditClick()" *ngIf="isEditing">
+        <mat-icon>undo</mat-icon>
+      </button>
+      <button mat-mini-fab color="primary" (click)="onDeleteClick()" *ngIf="!isEditing">
+        <mat-icon>delete_forever</mat-icon>
+      </button>
+      <button mat-mini-fab color="primary" (click)="onSaveClicked()" *ngIf="isEditing">
+        <mat-icon>save</mat-icon>
+      </button>
+    </mat-toolbar>
   </header>
-  <div #scrolledDocContainer class="container content-section">
-
-    <!-- <p>
-      <mat-form-field appearance="fill">
-        <mat-label>Title</mat-label>
-        <input matInput>
-      </mat-form-field>
-    </p> -->
+  <div #scrolledDocContainer class="container content-section" *ngIf="!isEditing">
+    <!-- Read-only section -->
     <p>{{ docItem?.title }}</p>
     <p>{{ docItem?.textContent }}</p>
+
+  </div>
+  <div #scrolledDocContainer class="container content-section" [hidden]="!isEditing">
+    <!-- Editing section -->
+    <p>
+      <mat-form-field appearance="fill">
+        <mat-label>Title</mat-label>
+        <input matInput placeholder="Enter document title..." #newTitle>
+      </mat-form-field>
+    </p>
+
+    <div class=container>
+      <mat-form-field class="example-full-width">
+        <mat-label>Text Content</mat-label>
+        <textarea matInput placeholder="Enter document text..." #newTextContent></textarea>
+      </mat-form-field>
+    </div>
 
   </div>
 </div>

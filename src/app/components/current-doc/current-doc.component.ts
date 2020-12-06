@@ -1,6 +1,9 @@
-import { Component, OnInit, ElementRef, ViewChild, Optional } from '@angular/core';
+import { DocListComponent } from './../doc-list/doc-list.component';
+import { Component, OnInit, ElementRef, ViewChild, Input } from '@angular/core';
 import * as NoSleep from 'nosleep.js';
 import { DocItem } from 'src/app/models/doc-item';
+import { DocManagerService } from 'src/app/services/doc-manager.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-current-doc',
@@ -9,63 +12,97 @@ import { DocItem } from 'src/app/models/doc-item';
 })
 export class CurrentDocComponent implements OnInit {
   @ViewChild('scrolledDocContainer') scrolledContentContainer: ElementRef;
+  @ViewChild('newTitle') newTitle: ElementRef;
+  @ViewChild('newTextContent') newTextContent: ElementRef;
+  @Input() public docListComponent: DocListComponent;
+  docItem: DocItem = null;
   isActive = false;
+  isEditing = false;
   speed = 0;
   scrollThread;
   noSleep = new NoSleep.default();
   noSleepStatus = '';
   lastScrollStopTime: number = null;
 
-  constructor(@Optional() public docItem: DocItem) { }
+  constructor(private docManagerService: DocManagerService, private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
+    // Subscribe to import even to reload docs
+    this.docListComponent.docSelected$.subscribe(docItem => {
+      this.loadDocItem(docItem);
+    });
   }
 
-  formatLabel(value: number) {
-    if (value >= 1000) {
-      return Math.round(value / 1000) + 'k';
-    }
-
-    return value;
+  showMsg(msg: string): void{
+    this.snackBar.open(msg, null, {
+      duration: 5000,
+    });
   }
 
-  loadDocItem(): void{
-    //this.enableEditing(false);
-    if (this.docItem == null){
-      //this.scrolledContentHeader.nativeElement.classList.add('no-doc-loaded');
-      console.log('no doc loaded');
-    }else{
-      console.log(`displaying doc id ${this.docItem.id}`);
-      //this.scrolledContentHeader.nativeElement.classList.remove('no-doc-loaded');
-      //this.newTitle.nativeElement.value = this.docItem.title;
-      //this.newTextContent.nativeElement.value = this.docItem.textContent;
-      this.speed = this.docItem.scrollSpeed;
-      this.onSpeedChanged(null);
-      this.scrolledContentContainer.nativeElement.scrollTo({top: 0, behavior: 'smooth'});
-    }
+  formatLabel(value: number): string {
+    return value.toString();
   }
 
-  onSpeedChanged(e): void{
+  onEditClick(): void {
+    this.isEditing = true;
+    // Update edit fields
+    this.newTitle.nativeElement.value = this.docItem.title;
+    this.newTextContent.nativeElement.value = this.docItem.textContent;
+  }
+
+  onUndoEditClick(): void {
+    this.isEditing = false;
+    this.showMsg('Cancelled edit!');
+  }
+
+  onDeleteClick(): void {
+    console.log(`delete clicked | docId: ${this.docItem.id}`);
+    this.showMsg(`Deleted document "${this.docItem.title}"!`);
+  }
+
+  onSaveClicked(): void{
+    console.log(`onSaveClicked | doc id: ${this.docItem.id}`);
+    this.docItem.title = this.newTitle.nativeElement.value;
+    this.docItem.textContent = this.newTextContent.nativeElement.value;
+    this.docItem.scrollSpeed = this.speed;
+    this.docManagerService.saveDocItem(this.docItem).subscribe((docItems) => {
+      console.log(`savedDoc | db item count: ${docItems.length}`);
+      this.isEditing = false;
+      this.showMsg(`Saved document "${this.docItem.title}"!`);
+    });
+  }
+
+  loadDocItem(docItem: DocItem): void {
+    this.docItem = docItem;
+    console.log(`displaying doc id ${this.docItem.id}`);
+    this.isEditing = false;
+    this.speed = this.docItem.scrollSpeed;
+    this.onSpeedChanged();
+    // Scroll to top
+    this.scrolledContentContainer.nativeElement.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  onSpeedChanged(): void {
     this.stopAutoScroll();
     this.startAutoScroll();
   }
 
-  toggleAutoScroll(enable: boolean): void{
-    if (enable){
+  toggleAutoScroll(enable: boolean): void {
+    if (enable) {
       this.enableNoSleep();
       this.startAutoScroll();
       this.isActive = true;
-    }else{
+    } else {
       this.disableNoSleep();
       this.stopAutoScroll();
       this.isActive = false;
     }
   }
 
-  onAutoScrollClicked(): void{
-    if (this.isActive){
+  onAutoScrollClicked(): void {
+    if (this.isActive) {
       this.toggleAutoScroll(true);
-    }else{
+    } else {
       this.toggleAutoScroll(false);
     }
   }
@@ -78,24 +115,25 @@ export class CurrentDocComponent implements OnInit {
     this.scrollThread = setInterval(() => {
       if (this.isActive) {
         const newScrollTop = this.scrolledContentContainer.nativeElement.scrollTop + 1;
-        if (newScrollTop < (this.scrolledContentContainer.nativeElement.scrollHeight - this.scrolledContentContainer.nativeElement.clientHeight)) {
+        const scrollHeight = this.scrolledContentContainer.nativeElement.scrollHeight;
+        const clientHeight = this.scrolledContentContainer.nativeElement.clientHeight;
+        if (newScrollTop < (scrollHeight - clientHeight)) {
           // didn't reach end, scroll it
-          this.scrolledContentContainer.nativeElement.scrollTo({top: newScrollTop, behavior: 'smooth'});
-        }else{
+          this.scrolledContentContainer.nativeElement.scrollTo({ top: newScrollTop, behavior: 'smooth' });
+        } else {
           // set scroll stop time
-          if (this.lastScrollStopTime == null)
-          {
+          if (this.lastScrollStopTime == null) {
             this.lastScrollStopTime = new Date().getTime();
-          }else{
+          } else {
             // already set, let's check if stopped too long, disable auto scroll
             const maxScrollStoppedInMs = 1000 * 60 * 3;
-            if ((new Date().getTime() - this.lastScrollStopTime) > maxScrollStoppedInMs){
+            if ((new Date().getTime() - this.lastScrollStopTime) > maxScrollStoppedInMs) {
               this.toggleAutoScroll(false);
             }
           }
         }
       }
-    }, (1000 - (this.speed * 10) ));
+    }, (1000 - (this.speed * 10)));
   }
 
   stopAutoScroll(): void {
@@ -103,15 +141,15 @@ export class CurrentDocComponent implements OnInit {
   }
 
   enableNoSleep(): void {
-      this.noSleep.enable();
-      this.noSleepStatus = 'Screen Lock Disabled!';
-      console.log('enabled screen wake lock');
+    this.noSleep.enable();
+    this.noSleepStatus = 'Screen Lock Disabled!';
+    console.log('enabled screen wake lock');
   }
 
   disableNoSleep(): void {
-      this.noSleep.disable();
-      this.noSleepStatus = '';
-      console.log('disabled screen wake lock');
+    this.noSleep.disable();
+    this.noSleepStatus = '';
+    console.log('disabled screen wake lock');
   }
 
 }

@@ -1,4 +1,5 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Subject } from 'rxjs';
 import { DocItem } from 'src/app/models/doc-item';
 import { DocManagerService } from 'src/app/services/doc-manager.service';
 
@@ -8,8 +9,10 @@ import { DocManagerService } from 'src/app/services/doc-manager.service';
   styleUrls: ['./doc-list.component.css']
 })
 export class DocListComponent implements OnInit {
-  @Output() docItemSelected: EventEmitter<DocItem> = new EventEmitter();
+  @ViewChild('docList') docList: ElementRef;
   docItems: DocItem[];
+  private docSelectedSource = new Subject<DocItem>();
+  docSelected$ = this.docSelectedSource.asObservable();
 
   constructor(private docManagerService: DocManagerService) { }
 
@@ -48,9 +51,10 @@ export class DocListComponent implements OnInit {
     });
   }
 
-  onRowClicked(docItem: DocItem): void{
+  onRowClicked(e): void{
+    const docItem: DocItem = e.option.value;
     console.log(`onRowClicked | doc id: ${docItem.id}`);
-    this.docItemSelected.emit(docItem);
+    this.docSelectedSource.next(docItem);
   }
 
   docItemsTableImported(): void{

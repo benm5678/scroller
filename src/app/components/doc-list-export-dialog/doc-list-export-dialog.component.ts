@@ -12,6 +12,7 @@ declare var Dropbox: any;
   styleUrls: ['./doc-list-export-dialog.component.css']
 })
 export class DocListExportDialogComponent implements OnInit {
+  isExporting = false;
   selectedTarget = 'Dropbox';
   dropboxClientId = '1bqptfh6hqy4tok';
   dropboxFileName = '/ScrollerDb';
@@ -70,7 +71,7 @@ export class DocListExportDialogComponent implements OnInit {
     // export to JSON, clear database, and import from JSON
     this.docManagerService.getDocItemsFromDb().subscribe((docItems) => {
       console.log(`saving ${docItems.length} docs from db`);
-
+      this.isExporting = true;
       const dbx = new Dropbox({ accessToken: this.dropboxToken });
       dbx.filesUpload({contents: JSON.stringify(docItems),
         path: `${this.dropboxFileName}.${new Date().getTime()}.json`, mode: {'.tag': 'overwrite'}, autorename: false, mute: true })
@@ -85,6 +86,8 @@ export class DocListExportDialogComponent implements OnInit {
         this.showMsg(`Failed to save data to dropbox!`);
         this.cookieService.delete(this.dropboxTokenCookie, null);
         this.dropboxToken = null;
+      }).finally(() => {
+        this.isExporting = false;
       });
     }, (err) => {
       this.showMsg('Failed to export local Db');

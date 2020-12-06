@@ -11,6 +11,14 @@
     </div>
   </header>
   <div class="container content-section">
+    <mat-selection-list #docList [multiple]="false" (selectionChange)="onRowClicked($event)">
+      <mat-list-option *ngFor="let docItem of docItems" [value]="docItem">
+        {{ docItem.title }}
+      </mat-list-option>
+    </mat-selection-list>
+    <!-- <mat-list *ngFor="let docItem of docItems">
+      <mat-list-item (click)="onRowClicked(docItem)"> {{ docItem.title }} </mat-list-item>
+     </mat-list>
     <div *ngFor="let docItem of docItems">
       <div class="container-fluid doc-item">
         <div class="row" (click)="onRowClicked(docItem)">
@@ -22,6 +30,6 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
   </div>
 </div>

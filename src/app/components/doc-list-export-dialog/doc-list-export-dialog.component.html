@@ -2,7 +2,7 @@
 <div mat-dialog-content>
   <mat-form-field appearance="fill">
     <mat-label>Export Target</mat-label>
-    <mat-select [(value)]="selectedTarget" (selectionChange)="onExportTargetChange()">
+    <mat-select [(value)]="selectedTarget" (selectionChange)="onExportTargetChange()" [disabled]="isExporting">
       <mat-option value="Dropbox">Dropbox</mat-option>
       <mat-option value="GoogleDrive">Google Drive</mat-option>
     </mat-select>
@@ -12,6 +12,8 @@
   </p>
 </div>
 <div mat-dialog-actions>
-  <button mat-button (click)="onCancelClick()" cdkFocusInitial>Cancel</button>
-  <button mat-button (click)="onExportClick()" [disabled]="!dropboxToken && selectedTarget == 'Dropbox'">Export</button>
+  <button mat-button (click)="onCancelClick()" cdkFocusInitial [disabled]="isExporting">Cancel</button>
+  <button mat-button (click)="onExportClick()" [disabled]="(!dropboxToken && selectedTarget == 'Dropbox') || isExporting">Export</button>
+  <mat-spinner [diameter]="20" [hidden]="!isExporting"></mat-spinner>
 </div>
+

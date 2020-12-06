@@ -2,6 +2,12 @@ mat-slider {
   width: 100%;
 }
 
+mat-form-field {
+  width: 100%;
+}
+
 .content-section {
   white-space: pre-wrap;
 }
+
+[hidden] { display: none !important;}
