@@ -31,6 +31,20 @@ export class CurrentDocComponent implements OnInit {
     this.docListComponent.docSelected$.subscribe(docItem => {
       this.loadDocItem(docItem);
     });
+
+
+    // Disable scroll when doc hidden (so noSleep works when user returns)
+    document.addEventListener(
+      'visibilitychange'
+      , () => {
+        if (document.hidden) {
+          console.log('document was hidden');
+          this.toggleAutoScroll(false);
+        }else{
+          console.log('document became visible');
+        }
+      }
+    );
   }
 
   showMsg(msg: string): void{
