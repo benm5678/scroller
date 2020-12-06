@@ -5,16 +5,16 @@
       <mat-slider thumbLabel [displayWith]="formatLabel" tickInterval="1" step="1" min="1" max="100" [(ngModel)]="speed"
         (change)="onSpeedChanged($event)">
       </mat-slider>
-      <button mat-mini-fab color="primary" (click)="onEditClick()" *ngIf="!isEditing">
+      <button mat-mini-fab color="primary" (click)="onEditClick()" *ngIf="!isEditing" matTooltip="Edit document">
         <mat-icon>edit</mat-icon>
       </button>
-      <button mat-mini-fab color="primary" (click)="onUndoEditClick()" *ngIf="isEditing">
+      <button mat-mini-fab color="primary" (click)="onUndoEditClick()" *ngIf="isEditing" matTooltip="Cancel document editing">
         <mat-icon>undo</mat-icon>
       </button>
-      <button mat-mini-fab color="warn" (click)="onDeleteClick()" *ngIf="!isEditing">
+      <button mat-mini-fab color="warn" (click)="onDeleteClick()" *ngIf="!isEditing" matTooltip="Delete document">
         <mat-icon>delete_forever</mat-icon>
       </button>
-      <button mat-mini-fab color="primary" (click)="onSaveClicked()" *ngIf="isEditing">
+      <button mat-mini-fab color="primary" (click)="onSaveClicked()" *ngIf="isEditing" matTooltip="Save changes">
         <mat-icon>save</mat-icon>
       </button>
     </mat-toolbar>

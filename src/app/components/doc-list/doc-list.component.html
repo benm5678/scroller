@@ -3,7 +3,7 @@
     <mat-toolbar>
       <app-doc-list-menu></app-doc-list-menu>
       {{ docItems?.length }} Scroll Items
-      <button mat-mini-fab color="primary" (click)="onAddNewClicked()">
+      <button mat-mini-fab color="primary" (click)="onAddNewClicked()" matTooltip="Add new document">
         <mat-icon>note_add</mat-icon>
       </button>
     </mat-toolbar>

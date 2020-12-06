@@ -32,9 +32,12 @@ main > div {
 
 header,
 footer {
-  /* background: SLATEGREY;
-  color: SNOW; */
   padding: 0.5em;
+}
+
+footer {
+  background: SLATEGREY;
+  color: SNOW;
 }
 
 main {
