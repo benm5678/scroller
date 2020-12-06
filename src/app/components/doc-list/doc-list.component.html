@@ -1,14 +1,13 @@
 <div class="container">
   <header>
-    <div>
+    <mat-toolbar>
       <app-doc-list-menu></app-doc-list-menu>
-      <img src="../../../assets/svg/scroll-icon.svg" />
-      {{ docItems?.length }}
-      Scroll Items
-    </div>
-    <div>
-      <img src="../../../assets/svg/add-doc-icon.svg" (click)="onAddNewClicked()" />
-    </div>
+      {{ docItems?.length }} Scroll Items
+      <button mat-mini-fab color="primary" (click)="onAddNewClicked()">
+        <mat-icon>note_add</mat-icon>
+      </button>
+    </mat-toolbar>
+    <mat-divider></mat-divider>
   </header>
   <div class="container content-section">
     <mat-selection-list #docList [multiple]="false" (selectionChange)="onRowClicked($event)">

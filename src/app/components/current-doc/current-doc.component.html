@@ -11,13 +11,14 @@
       <button mat-mini-fab color="primary" (click)="onUndoEditClick()" *ngIf="isEditing">
         <mat-icon>undo</mat-icon>
       </button>
-      <button mat-mini-fab color="primary" (click)="onDeleteClick()" *ngIf="!isEditing">
+      <button mat-mini-fab color="warn" (click)="onDeleteClick()" *ngIf="!isEditing">
         <mat-icon>delete_forever</mat-icon>
       </button>
       <button mat-mini-fab color="primary" (click)="onSaveClicked()" *ngIf="isEditing">
         <mat-icon>save</mat-icon>
       </button>
     </mat-toolbar>
+    <mat-divider></mat-divider>
   </header>
   <div #scrolledDocContainer class="container content-section" *ngIf="!isEditing">
     <!-- Read-only section -->
