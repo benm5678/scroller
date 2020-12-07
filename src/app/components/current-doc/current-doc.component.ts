@@ -143,10 +143,11 @@ export class CurrentDocComponent implements OnInit {
         const clientHeight = this.scrolledContentContainer.nativeElement.clientHeight;
         if (newScrollTop < (scrollHeight - clientHeight)) {
           // didn't reach end, scroll it
+          this.lastScrollStopTime = null; // reset the last stop
           this.scrolledContentContainer.nativeElement.scrollTo({ top: newScrollTop, behavior: 'smooth' });
         } else {
           // set scroll stop time
-          if (this.lastScrollStopTime == null) {
+          if (this.lastScrollStopTime === null) {
             this.lastScrollStopTime = new Date().getTime();
           } else {
             // already set, let's check if stopped too long, disable auto scroll

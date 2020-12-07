@@ -4,8 +4,14 @@ body {
   margin: 0;
 }
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
 
 .container {
   display: flex;
@@ -19,9 +25,11 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   height: 100%;
 }
 
-*, ::after, ::before {
+*,
+::after,
+::before {
   box-sizing: border-box;
-  }
+}
 
 header,
 footer {
@@ -48,16 +56,16 @@ footer {
   padding: 0.5em;
 }
 
-.flex-grow-1{
+.flex-grow-1 {
   flex-grow: 1 !important;
 }
 
 .h-100 {
-  height: 100%!important;
+  height: 100% !important;
 }
 
 .w-100 {
-  width: 100%!important;
+  width: 100% !important;
 }
 
 footer {
@@ -73,4 +81,3 @@ main {
   padding: 0.5em;
   overflow: scroll;
 }
-
