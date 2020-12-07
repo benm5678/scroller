@@ -1,6 +1,6 @@
 {
-  "name": "scroller",
-  "short_name": "scroller",
+  "name": "Scroller",
+  "short_name": "Scroller",
   "theme_color": "#1976d2",
   "background_color": "#fafafa",
   "display": "standalone",
