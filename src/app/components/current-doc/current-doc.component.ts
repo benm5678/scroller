@@ -20,7 +20,7 @@ export class CurrentDocComponent implements OnInit {
   isActive = false;
   isEditing = false;
   speed = 0;
-  scrollThread;
+  scrollThread = null;
   noSleep = new NoSleep.default();
   noSleepStatus = '';
   lastScrollStopTime: number = null;
@@ -151,6 +151,13 @@ export class CurrentDocComponent implements OnInit {
     this.scrollThread = setInterval(() => {
       if (this.isActive) {
         const newScrollTop = this.scrolledContentContainer.nativeElement.scrollTop + 1;
+        if((this.scrolledContentContainer.nativeElement.scrollHeight - this.scrolledContentContainer.nativeElement.clientHeight) != maxScrollTop)
+        {
+          //height/content changed
+          this.stopAutoScroll();
+          this.startAutoScroll();
+          return;
+        }
 
         if (newScrollTop < (maxScrollTop)) {
           this.debugInfo = `newScrollTop: ${newScrollTop} | maxScrollTop: ${maxScrollTop} | speed: ${this.speed} | msToPauseBetweenScrolls: ${msToPauseBetweenScrolls}`;
