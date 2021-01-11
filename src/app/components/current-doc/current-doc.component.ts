@@ -1,9 +1,10 @@
-import { DocListComponent } from './../doc-list/doc-list.component';
-import { Component, OnInit, ElementRef, ViewChild, Input } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import * as NoSleep from 'nosleep.js';
 import { DocItem } from 'src/app/models/doc-item';
 import { DocManagerService } from 'src/app/services/doc-manager.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
+
+import { DocListComponent } from './../doc-list/doc-list.component';
 
 @Component({
   selector: 'app-current-doc',
@@ -23,6 +24,7 @@ export class CurrentDocComponent implements OnInit {
   noSleep = new NoSleep.default();
   noSleepStatus = '';
   lastScrollStopTime: number = null;
+  debugInfo = "";
 
   constructor(private docManagerService: DocManagerService, private snackBar: MatSnackBar) { }
 
@@ -136,12 +138,16 @@ export class CurrentDocComponent implements OnInit {
     this.lastScrollStopTime = null;
 
     // start auto scroll thread
+    const scrollHeight = this.scrolledContentContainer.nativeElement.scrollHeight;
+    const clientHeight = this.scrolledContentContainer.nativeElement.clientHeight;
+    const maxScrollTop = scrollHeight - clientHeight;
+    const msToPauseBetweenScrolls = ((this.speed * 1000) / maxScrollTop);
     this.scrollThread = setInterval(() => {
       if (this.isActive) {
         const newScrollTop = this.scrolledContentContainer.nativeElement.scrollTop + 1;
-        const scrollHeight = this.scrolledContentContainer.nativeElement.scrollHeight;
-        const clientHeight = this.scrolledContentContainer.nativeElement.clientHeight;
-        if (newScrollTop < (scrollHeight - clientHeight)) {
+
+        if (newScrollTop < (maxScrollTop)) {
+          this.debugInfo = `newScrollTop: ${newScrollTop} | maxScrollTop: ${maxScrollTop} | speed: ${this.speed} | msToPauseBetweenScrolls: ${msToPauseBetweenScrolls}`;
           // didn't reach end, scroll it
           this.lastScrollStopTime = null; // reset the last stop
           this.scrolledContentContainer.nativeElement.scrollTo({ top: newScrollTop, behavior: 'smooth' });
@@ -158,7 +164,7 @@ export class CurrentDocComponent implements OnInit {
           }
         }
       }
-    }, (1000 - (this.speed * 10)));
+    }, msToPauseBetweenScrolls);
   }
 
   stopAutoScroll(): void {
