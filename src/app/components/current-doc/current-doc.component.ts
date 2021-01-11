@@ -109,8 +109,10 @@ export class CurrentDocComponent implements OnInit {
   }
 
   onSpeedChanged(): void {
-    this.stopAutoScroll();
-    this.startAutoScroll();
+    if(this.isActive){
+      this.stopAutoScroll();
+      this.startAutoScroll();
+    }
   }
 
   toggleAutoScroll(enable: boolean): void {
@@ -134,6 +136,10 @@ export class CurrentDocComponent implements OnInit {
   }
 
   startAutoScroll(): void {
+    // skip if already running
+    if(this.scrollThread !== null)
+      return;
+
     // reset last scroll stop time
     this.lastScrollStopTime = null;
 
@@ -169,6 +175,7 @@ export class CurrentDocComponent implements OnInit {
 
   stopAutoScroll(): void {
     clearInterval(this.scrollThread);
+    this.scrollThread = null;
   }
 
   enableNoSleep(): void {
